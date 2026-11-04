@@ -1,0 +1,618 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --background: #080e19;
+  --panel: #101a2a;
+  --panel-light: #172438;
+  --border: #26374d;
+  --text: #edf4ff;
+  --muted: #899bb2;
+  --accent: #53d8ff;
+  --green: #49e5a0;
+  --orange: #ffad60;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--background);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.topbar {
+  height: 78px;
+  padding: 0 5%;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0b1422;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.brand-icon {
+  color: var(--accent);
+  font-size: 35px;
+}
+
+.brand h1,
+.dashboard-heading h2,
+.section-heading h3 {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+}
+
+.brand h1 {
+  font-size: 19px;
+}
+
+.brand small {
+  font-size: 9px;
+  color: var(--muted);
+  letter-spacing: 2px;
+}
+
+.top-status {
+  font-size: 11px;
+  color: var(--green);
+  letter-spacing: 1px;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 7px;
+  box-shadow: 0 0 12px var(--green);
+}
+
+main {
+  width: 92%;
+  max-width: 1450px;
+  margin: 35px auto;
+}
+
+.dashboard-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.eyebrow {
+  color: var(--accent);
+  font-size: 10px;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+}
+
+.dashboard-heading h2 {
+  font-size: clamp(22px, 3vw, 34px);
+  margin-bottom: 10px;
+}
+
+.dashboard-heading p:last-child {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.day-counter {
+  min-width: 105px;
+  text-align: center;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.day-counter small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.day-counter strong {
+  font-family: 'Orbitron';
+  font-size: 32px;
+  color: var(--accent);
+}
+
+.planet-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.planet-selector button {
+  background: var(--panel);
+  color: var(--muted);
+  border: 1px solid var(--border);
+  padding: 12px 20px;
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.planet-selector button.selected {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: #102b3b;
+}
+
+.game-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 290px;
+  gap: 18px;
+}
+
+.planet-scene {
+  height: 410px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background:
+    radial-gradient(ellipse at 75% 20%, #293c62 0%, transparent 30%),
+    linear-gradient(180deg, #101b35 0%, #243b59 65%, #8d735b 100%);
+  isolation: isolate;
+}
+
+.planet-scene.mars {
+  background:
+    radial-gradient(ellipse at 75% 20%, #744d49 0%, transparent 30%),
+    linear-gradient(180deg, #211c32 0%, #784e4b 65%, #c37a53 100%);
+}
+
+.scene-label,
+.scene-footer {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 5;
+  color: #d6e9ff;
+  font-family: 'Orbitron';
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.scene-label {
+  top: 18px;
+}
+
+.scene-footer {
+  bottom: 17px;
+}
+
+.stars {
+  position: absolute;
+  inset: 0;
+  opacity: .8;
+  background-image:
+    radial-gradient(2px 2px at 10% 20%, white 50%, transparent),
+    radial-gradient(2px 2px at 35% 12%, white 50%, transparent),
+    radial-gradient(2px 2px at 65% 25%, white 50%, transparent),
+    radial-gradient(2px 2px at 85% 10%, white 50%, transparent),
+    radial-gradient(2px 2px at 50% 38%, white 50%, transparent),
+    radial-gradient(1px 1px at 25% 42%, white 50%, transparent);
+}
+
+.planet-horizon {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 43%;
+  background: linear-gradient(180deg, #87745e, #51473d);
+  border-radius: 50% 50% 0 0 / 15% 15% 0 0;
+  transform: scaleX(1.5);
+}
+
+.mars .planet-horizon {
+  background: linear-gradient(180deg, #ba7254, #713e36);
+}
+
+.mountain {
+  position: absolute;
+  bottom: 27%;
+  width: 55%;
+  height: 35%;
+  background: #756b62;
+  clip-path: polygon(0 100%, 30% 15%, 47% 60%, 70% 0, 100% 100%);
+  opacity: .75;
+}
+
+.mountain-back {
+  left: -8%;
+}
+
+.mountain-front {
+  right: -8%;
+  transform: scale(1.2);
+  background: #514b47;
+}
+
+.outpost {
+  position: absolute;
+  bottom: 23%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 310px;
+  height: 180px;
+  z-index: 3;
+}
+
+.habitat {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 150px;
+}
+
+.dome {
+  width: 125px;
+  height: 85px;
+  margin: auto;
+  background: linear-gradient(135deg, #c1eaff, #4688a9 55%, #183d5a);
+  border: 3px solid #a5dfff;
+  border-radius: 80px 80px 8px 8px;
+  box-shadow: inset 0 0 20px #b9eaff88, 0 0 20px #53d8ff55;
+}
+
+.habitat-body {
+  height: 55px;
+  background: linear-gradient(90deg, #8395a8, #e0e8ef, #718398);
+  border: 2px solid #d7e7f5;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.window {
+  width: 28px;
+  height: 18px;
+  background: #204e71;
+  border: 2px solid #a7dfff;
+  border-radius: 4px;
+}
+
+.door {
+  width: 23px;
+  height: 42px;
+  background: #314459;
+  border: 2px solid #8fa6b9;
+  margin-top: 13px;
+}
+
+.habitat-base {
+  height: 9px;
+  background: #536a7e;
+}
+
+.antenna {
+  position: absolute;
+  left: 15px;
+  bottom: 35px;
+  width: 4px;
+  height: 90px;
+  background: #bdcddd;
+}
+
+.antenna div {
+  position: absolute;
+  top: -10px;
+  left: -7px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--accent);
+}
+
+.solar-panels {
+  position: absolute;
+  bottom: 40px;
+  right: 0;
+  display: flex;
+  gap: 7px;
+  transform: perspective(250px) rotateY(-15deg);
+}
+
+.solar-panel {
+  width: 65px;
+  height: 52px;
+  border: 3px solid #a8bed2;
+  background: repeating-linear-gradient(
+    90deg,
+    #164c80 0px,
+    #164c80 13px,
+    #3b83ba 14px,
+    #164c80 16px
+  );
+  box-shadow: 0 0 12px #53d8ff33;
+}
+
+.status-panel,
+.resource-card,
+.item-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.status-panel {
+  padding: 22px;
+}
+
+.status-panel h3 {
+  font-family: 'Orbitron';
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.status-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.status-row span {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.status-row strong {
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.control-btn {
+  width: 100%;
+  margin-top: 20px;
+  background: #123448;
+  color: var(--accent);
+  border: 1px solid #24718e;
+  border-radius: 6px;
+  padding: 13px 8px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.resources-section,
+.inventory-section,
+.alerts-section {
+  margin-top: 35px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 17px;
+  gap: 10px;
+}
+
+.section-heading h3 {
+  font-size: 16px;
+}
+
+.section-tag,
+.credits {
+  font-size: 11px;
+  color: var(--green);
+  border: 1px solid #28785c;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.resource-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 17px;
+}
+
+.resource-icon {
+  font-size: 27px;
+}
+
+.resource-info {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.resource-info span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.resource-info strong {
+  font-family: 'Orbitron';
+  font-size: 15px;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.item-card {
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-icon {
+  font-size: 28px;
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.item-info strong {
+  font-size: 12px;
+}
+
+.item-info small {
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.item-info span {
+  color: var(--orange);
+  font-size: 10px;
+}
+
+.install-btn {
+  background: #123448;
+  color: var(--accent);
+  border: 1px solid #24718e;
+  border-radius: 5px;
+  padding: 9px;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.install-btn:disabled {
+  opacity: .55;
+  cursor: default;
+  color: var(--green);
+  border-color: #28785c;
+}
+
+.alert,
+.success-alert {
+  padding: 13px;
+  margin-top: 10px;
+  border-radius: 7px;
+  font-size: 11px;
+}
+
+.alert {
+  background: #422a1d;
+  color: #ffbe81;
+  border: 1px solid #86512e;
+}
+
+.success-alert {
+  background: #102c27;
+  color: var(--green);
+  border: 1px solid #28785c;
+}
+
+footer {
+  padding: 25px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: 2px;
+  border-top: 1px solid var(--border);
+}
+
+.loading {
+  padding: 50px;
+  text-align: center;
+  font-family: 'Orbitron';
+  color: var(--accent);
+}
+
+@media (max-width: 850px) {
+  .game-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .status-panel {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 15px;
+  }
+
+  .status-panel h3,
+  .control-btn {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 550px) {
+  main {
+    width: 94%;
+    margin-top: 22px;
+  }
+
+  .brand small {
+    font-size: 7px;
+  }
+
+  .dashboard-heading {
+    align-items: flex-start;
+  }
+
+  .dashboard-heading h2 {
+    font-size: 19px;
+  }
+
+  .planet-scene {
+    height: 320px;
+  }
+
+  .resource-grid,
+  .inventory-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resource-card {
+    padding: 13px;
+  }
+
+  .status-panel {
+    grid-template-columns: 1fr 1fr;
+    padding: 15px;
+  }
+
+  .scene-label,
+  .scene-footer {
+    font-size: 7px;
+  }
+}

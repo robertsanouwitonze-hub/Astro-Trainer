@@ -11,6 +11,7 @@
   --accent: #53d8ff;
   --green: #49e5a0;
   --orange: #ffad60;
+  --red: #ff6868;
 }
 
 * {
@@ -31,13 +32,19 @@ button {
   cursor: pointer;
 }
 
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
 .topbar {
-  height: 78px;
+  min-height: 78px;
   padding: 0 5%;
   border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 15px;
   background: #0b1422;
 }
 
@@ -52,15 +59,10 @@ button {
   font-size: 35px;
 }
 
-.brand h1,
-.dashboard-heading h2,
-.section-heading h3 {
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 1px;
-}
-
 .brand h1 {
+  font-family: 'Orbitron', sans-serif;
   font-size: 19px;
+  letter-spacing: 1px;
 }
 
 .brand small {
@@ -70,19 +72,28 @@ button {
 }
 
 .top-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 11px;
   color: var(--green);
   letter-spacing: 1px;
 }
 
 .live-dot {
-  display: inline-block;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--green);
-  margin-right: 7px;
   box-shadow: 0 0 12px var(--green);
+  animation: pulse 1.8s infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+    box-shadow: 0 0 3px var(--green);
+  }
 }
 
 main {
@@ -106,6 +117,12 @@ main {
   margin-bottom: 10px;
 }
 
+.dashboard-heading h2,
+.section-heading h3 {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+}
+
 .dashboard-heading h2 {
   font-size: clamp(22px, 3vw, 34px);
   margin-bottom: 10px;
@@ -115,6 +132,7 @@ main {
   color: var(--muted);
   font-size: 13px;
   line-height: 1.6;
+  max-width: 700px;
 }
 
 .day-counter {
@@ -134,13 +152,14 @@ main {
 }
 
 .day-counter strong {
-  font-family: 'Orbitron';
+  font-family: 'Orbitron', sans-serif;
   font-size: 32px;
   color: var(--accent);
 }
 
 .planet-selector {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 18px;
 }
@@ -154,6 +173,12 @@ main {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 1px;
+  transition: 0.2s ease;
+}
+
+.planet-selector button:hover {
+  border-color: var(--accent);
+  color: var(--text);
 }
 
 .planet-selector button.selected {
@@ -166,24 +191,37 @@ main {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 290px;
   gap: 18px;
+  align-items: stretch;
 }
 
+/* 3D VIEWPORT */
+
 .planet-scene {
-  height: 410px;
+  height: 500px;
+  min-width: 0;
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 12px;
-  background:
-    radial-gradient(ellipse at 75% 20%, #293c62 0%, transparent 30%),
-    linear-gradient(180deg, #101b35 0%, #243b59 65%, #8d735b 100%);
+  background: #080e19;
   isolation: isolate;
+  box-shadow: 0 15px 50px #00000040;
 }
 
-.planet-scene.mars {
-  background:
-    radial-gradient(ellipse at 75% 20%, #744d49 0%, transparent 30%),
-    linear-gradient(180deg, #211c32 0%, #784e4b 65%, #c37a53 100%);
+.planet-scene canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+  outline: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+.planet-scene canvas:active {
+  cursor: grabbing;
 }
 
 .scene-label,
@@ -193,11 +231,14 @@ main {
   right: 18px;
   display: flex;
   justify-content: space-between;
+  gap: 10px;
   z-index: 5;
+  pointer-events: none;
   color: #d6e9ff;
-  font-family: 'Orbitron';
+  font-family: 'Orbitron', sans-serif;
   font-size: 9px;
   letter-spacing: 1px;
+  text-shadow: 0 2px 5px #000;
 }
 
 .scene-label {
@@ -208,154 +249,36 @@ main {
   bottom: 17px;
 }
 
-.stars {
+.scene-controls {
   position: absolute;
-  inset: 0;
-  opacity: .8;
-  background-image:
-    radial-gradient(2px 2px at 10% 20%, white 50%, transparent),
-    radial-gradient(2px 2px at 35% 12%, white 50%, transparent),
-    radial-gradient(2px 2px at 65% 25%, white 50%, transparent),
-    radial-gradient(2px 2px at 85% 10%, white 50%, transparent),
-    radial-gradient(2px 2px at 50% 38%, white 50%, transparent),
-    radial-gradient(1px 1px at 25% 42%, white 50%, transparent);
-}
-
-.planet-horizon {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 43%;
-  background: linear-gradient(180deg, #87745e, #51473d);
-  border-radius: 50% 50% 0 0 / 15% 15% 0 0;
-  transform: scaleX(1.5);
-}
-
-.mars .planet-horizon {
-  background: linear-gradient(180deg, #ba7254, #713e36);
-}
-
-.mountain {
-  position: absolute;
-  bottom: 27%;
-  width: 55%;
-  height: 35%;
-  background: #756b62;
-  clip-path: polygon(0 100%, 30% 15%, 47% 60%, 70% 0, 100% 100%);
-  opacity: .75;
-}
-
-.mountain-back {
-  left: -8%;
-}
-
-.mountain-front {
-  right: -8%;
-  transform: scale(1.2);
-  background: #514b47;
-}
-
-.outpost {
-  position: absolute;
-  bottom: 23%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 310px;
-  height: 180px;
-  z-index: 3;
-}
-
-.habitat {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 150px;
-}
-
-.dome {
-  width: 125px;
-  height: 85px;
-  margin: auto;
-  background: linear-gradient(135deg, #c1eaff, #4688a9 55%, #183d5a);
-  border: 3px solid #a5dfff;
-  border-radius: 80px 80px 8px 8px;
-  box-shadow: inset 0 0 20px #b9eaff88, 0 0 20px #53d8ff55;
-}
-
-.habitat-body {
-  height: 55px;
-  background: linear-gradient(90deg, #8395a8, #e0e8ef, #718398);
-  border: 2px solid #d7e7f5;
-  position: relative;
+  right: 18px;
+  bottom: 48px;
+  z-index: 5;
   display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
+  pointer-events: none;
+  text-shadow: 0 2px 5px #000;
 }
 
-.window {
-  width: 28px;
-  height: 18px;
-  background: #204e71;
-  border: 2px solid #a7dfff;
+.scene-controls span {
+  background: #101a2add;
+  border: 1px solid #53d8ff66;
+  color: var(--accent);
   border-radius: 4px;
+  padding: 5px 8px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
 }
 
-.door {
-  width: 23px;
-  height: 42px;
-  background: #314459;
-  border: 2px solid #8fa6b9;
-  margin-top: 13px;
+.scene-controls small {
+  font-size: 8px;
+  color: #dceaff;
+  letter-spacing: 1px;
 }
 
-.habitat-base {
-  height: 9px;
-  background: #536a7e;
-}
-
-.antenna {
-  position: absolute;
-  left: 15px;
-  bottom: 35px;
-  width: 4px;
-  height: 90px;
-  background: #bdcddd;
-}
-
-.antenna div {
-  position: absolute;
-  top: -10px;
-  left: -7px;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--accent);
-  border-radius: 50%;
-  box-shadow: 0 0 15px var(--accent);
-}
-
-.solar-panels {
-  position: absolute;
-  bottom: 40px;
-  right: 0;
-  display: flex;
-  gap: 7px;
-  transform: perspective(250px) rotateY(-15deg);
-}
-
-.solar-panel {
-  width: 65px;
-  height: 52px;
-  border: 3px solid #a8bed2;
-  background: repeating-linear-gradient(
-    90deg,
-    #164c80 0px,
-    #164c80 13px,
-    #3b83ba 14px,
-    #164c80 16px
-  );
-  box-shadow: 0 0 12px #53d8ff33;
-}
+/* MISSION PANEL */
 
 .status-panel,
 .resource-card,
@@ -370,7 +293,7 @@ main {
 }
 
 .status-panel h3 {
-  font-family: 'Orbitron';
+  font-family: 'Orbitron', sans-serif;
   font-size: 13px;
   margin-bottom: 20px;
 }
@@ -403,7 +326,14 @@ main {
   padding: 13px 8px;
   font-size: 10px;
   font-weight: 700;
+  transition: 0.2s ease;
 }
+
+.control-btn:hover {
+  background: #1a4a62;
+}
+
+/* RESOURCES */
 
 .resources-section,
 .inventory-section,
@@ -443,6 +373,11 @@ main {
   align-items: center;
   gap: 14px;
   padding: 17px;
+  transition: border-color 0.2s ease;
+}
+
+.resource-card:hover {
+  border-color: #41617e;
 }
 
 .resource-icon {
@@ -453,6 +388,7 @@ main {
   display: flex;
   flex-direction: column;
   gap: 7px;
+  min-width: 0;
 }
 
 .resource-info span {
@@ -461,9 +397,12 @@ main {
 }
 
 .resource-info strong {
-  font-family: 'Orbitron';
-  font-size: 15px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  overflow-wrap: anywhere;
 }
+
+/* INVENTORY */
 
 .inventory-grid {
   display: grid;
@@ -476,6 +415,7 @@ main {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .item-icon {
@@ -513,14 +453,21 @@ main {
   padding: 9px;
   font-size: 9px;
   font-weight: 700;
+  transition: 0.2s ease;
+}
+
+.install-btn:hover:not(:disabled) {
+  background: #1a4a62;
 }
 
 .install-btn:disabled {
-  opacity: .55;
+  opacity: 0.65;
   cursor: default;
   color: var(--green);
   border-color: #28785c;
 }
+
+/* ALERTS */
 
 .alert,
 .success-alert {
@@ -542,6 +489,8 @@ main {
   border: 1px solid #28785c;
 }
 
+/* FOOTER */
+
 footer {
   padding: 25px;
   text-align: center;
@@ -551,14 +500,9 @@ footer {
   border-top: 1px solid var(--border);
 }
 
-.loading {
-  padding: 50px;
-  text-align: center;
-  font-family: 'Orbitron';
-  color: var(--accent);
-}
+/* TABLETS */
 
-@media (max-width: 850px) {
+@media (max-width: 1000px) {
   .game-layout {
     grid-template-columns: 1fr;
   }
@@ -573,16 +517,44 @@ footer {
   .control-btn {
     grid-column: 1 / -1;
   }
+
+  .planet-scene {
+    height: 440px;
+  }
 }
 
-@media (max-width: 550px) {
-  main {
-    width: 94%;
-    margin-top: 22px;
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .topbar {
+    min-height: 68px;
+    padding: 0 4%;
+  }
+
+  .brand {
+    gap: 8px;
+  }
+
+  .brand-icon {
+    font-size: 27px;
+  }
+
+  .brand h1 {
+    font-size: 15px;
   }
 
   .brand small {
-    font-size: 7px;
+    font-size: 6px;
+    letter-spacing: 1px;
+  }
+
+  .top-status {
+    font-size: 9px;
+  }
+
+  main {
+    width: 94%;
+    margin-top: 22px;
   }
 
   .dashboard-heading {
@@ -593,8 +565,38 @@ footer {
     font-size: 19px;
   }
 
+  .dashboard-heading p:last-child {
+    font-size: 11px;
+  }
+
+  .day-counter {
+    min-width: 75px;
+    padding: 10px;
+  }
+
+  .day-counter strong {
+    font-size: 24px;
+  }
+
+  .planet-selector button {
+    padding: 10px 12px;
+    font-size: 9px;
+  }
+
   .planet-scene {
-    height: 320px;
+    height: 360px;
+  }
+
+  .scene-label,
+  .scene-footer {
+    left: 10px;
+    right: 10px;
+    font-size: 7px;
+  }
+
+  .scene-controls {
+    right: 10px;
+    bottom: 42px;
   }
 
   .resource-grid,
@@ -611,8 +613,25 @@ footer {
     padding: 15px;
   }
 
-  .scene-label,
-  .scene-footer {
-    font-size: 7px;
+  .status-panel h3 {
+    font-size: 11px;
+  }
+
+  .status-row {
+    padding: 10px 0;
+  }
+
+  .item-card {
+    padding: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live-dot {
+    animation: none;
+  }
+
+  button {
+    transition: none;
   }
 }
